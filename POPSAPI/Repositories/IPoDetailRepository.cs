@@ -10,9 +10,9 @@ namespace POPSAPI.Repositories
     public interface IPoDetailRepository : IDisposable
     {
         List<PoDetailModel> GetAllPODetails();
-        PoDetailModel GetPoDetailsById(string PoNo);
+        PoDetailModel GetPoDetailsById(string PoNo,string iTCode);
         string AddPoDetail(PoDetailModel poDetail);
         string UpdatePoDetail(PoDetailModel poDetail);
-        void DeletePoDetail(string PoNo);
+        void DeletePoDetail(string PoNo,string iTCode);
     }
 }

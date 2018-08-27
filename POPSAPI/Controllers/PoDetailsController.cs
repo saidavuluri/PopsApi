@@ -33,11 +33,12 @@ namespace POPSAPI.Controllers
             return _poDetailsRepository.GetAllPODetails();
         }
 
-        // GET: api/PoDetails/5
+        // GET: api/PoDetails/5/AA
+        [HttpGet, Route("api/PODetails/{id}/{iTCode}")]
         [ResponseType(typeof(PODETAIL))]
-        public IHttpActionResult GetPODETAIL(string poNo)
+        public IHttpActionResult GetPODETAIL(string id,string iTCode)
         {
-            PoDetailModel pODETAIL = _poDetailsRepository.GetPoDetailsById(poNo);
+            PoDetailModel pODETAIL = _poDetailsRepository.GetPoDetailsById(id, iTCode);
             if (pODETAIL == null)
             {
                 return NotFound();
@@ -75,15 +76,16 @@ namespace POPSAPI.Controllers
         }
 
         // DELETE: api/PoDetails/5
+        [HttpDelete, Route("api/PODetails/{id}/{iTCode}")]
         [ResponseType(typeof(PODETAIL))]
-        public IHttpActionResult DeletePODETAIL(string id)
+        public IHttpActionResult DeletePODETAIL(string id,string iTCode)
         {
-            PoDetailModel poDetail = _poDetailsRepository.GetPoDetailsById(id);
+            PoDetailModel poDetail = _poDetailsRepository.GetPoDetailsById(id, iTCode);
             if (poDetail == null)
             {
                 return NotFound();
             }
-            _poDetailsRepository.DeletePoDetail(id);
+            _poDetailsRepository.DeletePoDetail(id,iTCode);
             return Ok();
         }
     }

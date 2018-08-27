@@ -37,9 +37,9 @@ namespace POPSAPI.Controllers
 
         // GET: api/Items/5
         [ResponseType(typeof(ITEM))]
-        public IHttpActionResult GetITEM(string itemCode)
+        public IHttpActionResult GetITEM(string id)
         {
-            ITEMModel iTEM = _itemRepository.GetItemByItemCode(itemCode);
+            ITEMModel iTEM = _itemRepository.GetItemByItemCode(id);
             if (iTEM == null)
             {
                 return NotFound();
@@ -50,7 +50,7 @@ namespace POPSAPI.Controllers
 
         // PUT: api/Items/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutITEM(string itemCode, ITEMModel iTEM)
+        public IHttpActionResult PutITEM(string id, ITEMModel iTEM)
         {
             string itCode = _itemRepository.UpdateItem(iTEM);
             if (itCode == string.Empty)
@@ -76,9 +76,9 @@ namespace POPSAPI.Controllers
 
         // DELETE: api/Items/5
         [ResponseType(typeof(ITEM))]
-        public IHttpActionResult DeleteITEM(string itemCode)
+        public IHttpActionResult DeleteITEM(string id)
         {
-            ITEMModel item = _itemRepository.GetItemByItemCode(itemCode);
+            ITEMModel item = _itemRepository.GetItemByItemCode(id);
             if (item == null)
             {
                 return NotFound();

@@ -43,9 +43,9 @@ namespace POPSAPI.Repositories
             return poDetailEntity;
         }
 
-        public void DeletePoDetail(string PoNo)
+        public void DeletePoDetail(string PoNo,string iTCode)
         {
-            PODETAIL poDetailEntity = _context.PODETAILs.Find(PoNo);
+            PODETAIL poDetailEntity = _context.PODETAILs.Find(PoNo,iTCode);
             _context.PODETAILs.Remove(poDetailEntity);
             _context.SaveChanges();
         }
@@ -93,7 +93,7 @@ namespace POPSAPI.Repositories
                 objPoDetail.PONO = poDetailEntity.PONO;
                 objPoDetail.ITCODE = poDetailEntity.ITCODE;
                 objPoDetail.QTY = poDetailEntity.QTY;
-                objPoDetail.ITNAME = poDetailEntity.ITEM.ITDESC;
+                objPoDetail.ITDESC = poDetailEntity.ITEM.ITDESC;
                 objPoDetail.PODATE = poDetailEntity.POMASTER.PODATE;
                 objPoDetail.SUPLNAME = poDetailEntity.POMASTER.SUPPLIER.SUPLNAME;
                 objPoDetail.SUPLNO = poDetailEntity.POMASTER.SUPPLIER.SUPLNO;
@@ -102,9 +102,9 @@ namespace POPSAPI.Repositories
         }
 
 
-        public PoDetailModel GetPoDetailsById(string PoNo)
+        public PoDetailModel GetPoDetailsById(string PoNo,string ITCode)
         {
-            return GetPoDetailModel(_context.PODETAILs.Find(PoNo));
+            return GetPoDetailModel(_context.PODETAILs.Find(PoNo,ITCode));
         }
 
         public string UpdatePoDetail(PoDetailModel poDetail)

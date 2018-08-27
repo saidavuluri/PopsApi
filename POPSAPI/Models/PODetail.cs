@@ -13,7 +13,7 @@ namespace POPS.Models
         public string PONO { get; set; }
         public string ITCODE { get; set; }
         public Nullable<int> QTY { get; set; }
-        public string ITNAME { get; set; }
+        public string ITDESC { get; set; }
         public DateTime? PODATE { get; set; }
 
         public string SUPLNAME { get; set; }

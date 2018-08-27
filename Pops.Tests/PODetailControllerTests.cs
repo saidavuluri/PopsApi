@@ -37,8 +37,8 @@ namespace Pops.Tests
         public void GetSuppliersByNo_ShouldReturnSelectedSupplier()
         {
             var testPoMasters = GetTestPoDetails();
-            mockPoDetailRepository.Setup(s => s.GetPoDetailsById(It.IsAny<string>())).Returns(Task.FromResult(testPoMasters[1]).Result);
-            var result = controller.GetPODETAIL("2") as OkNegotiatedContentResult<PoDetailModel>;
+            mockPoDetailRepository.Setup(s => s.GetPoDetailsById(It.IsAny<string>(),It.IsAny<string>())).Returns(Task.FromResult(testPoMasters[1]).Result);
+            var result = controller.GetPODETAIL("2","BB") as OkNegotiatedContentResult<PoDetailModel>;
             Assert.AreEqual(testPoMasters[1].PONO, result.Content.PONO);
         }
 
@@ -63,19 +63,19 @@ namespace Pops.Tests
         [TestMethod]
         public void DeleteSupplierTest()
         {
-            PoDetailModel model = new PoDetailModel { PONO = "1" };
-            mockPoDetailRepository.Setup(s => s.GetPoDetailsById(It.IsAny<string>())).Returns(model);
-            var result = controller.DeletePODETAIL(model.PONO);
+            PoDetailModel model = new PoDetailModel { PONO = "1", ITCODE = "AA" };
+            mockPoDetailRepository.Setup(s => s.GetPoDetailsById(It.IsAny<string>(), It.IsAny<string>())).Returns(model);
+            var result = controller.DeletePODETAIL(model.PONO,model.ITCODE);
             Assert.IsInstanceOfType(result, typeof(OkResult));
         }
 
         private List<PoDetailModel> GetTestPoDetails()
         {
             var poDetailModels = new List<PoDetailModel>();
-            poDetailModels.Add(new PoDetailModel { PONO = "1" });
-            poDetailModels.Add(new PoDetailModel { PONO = "2" });
-            poDetailModels.Add(new PoDetailModel { PONO = "3" });
-            poDetailModels.Add(new PoDetailModel { PONO = "4" });
+            poDetailModels.Add(new PoDetailModel { PONO = "1" , ITCODE= "AA"});
+            poDetailModels.Add(new PoDetailModel { PONO = "2", ITCODE = "BB" });
+            poDetailModels.Add(new PoDetailModel { PONO = "3", ITCODE = "CC" });
+            poDetailModels.Add(new PoDetailModel { PONO = "4", ITCODE = "DD" });
 
             return poDetailModels;
         }
