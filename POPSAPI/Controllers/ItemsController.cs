@@ -50,28 +50,28 @@ namespace POPSAPI.Controllers
 
         // PUT: api/Items/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutITEM(string id, ITEMModel iTEM)
+        public IHttpActionResult PutITEM(string id, ITEMModel item)
         {
-            string itCode = _itemRepository.UpdateItem(iTEM);
+            string itCode = _itemRepository.UpdateItem(item);
             if (itCode == string.Empty)
             {
                 throw new Exception("Falied to update");
             }
 
-            return Content(HttpStatusCode.Accepted, iTEM);
+            return Content(HttpStatusCode.Accepted, item);
         }
 
         // POST: api/Items
         [ResponseType(typeof(ITEM))]
-        public IHttpActionResult PostITEM(ITEMModel iTEM)
+        public IHttpActionResult PostITEM(ITEMModel item)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            string poNo = _itemRepository.AddItem(iTEM);
-            return CreatedAtRoute("DefaultApi", new { id = iTEM.ITCODE }, iTEM);
+            string poNo = _itemRepository.AddItem(item);
+            return CreatedAtRoute("DefaultApi", new { id = item.ITCODE }, item);
         }
 
         // DELETE: api/Items/5

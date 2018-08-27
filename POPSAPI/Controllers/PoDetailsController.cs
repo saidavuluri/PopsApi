@@ -49,7 +49,7 @@ namespace POPSAPI.Controllers
 
         // PUT: api/PoDetails/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutPODETAIL(string id, PoDetailModel pODETAIL)
+        public IHttpActionResult PutPODETAIL(string id, PoDetailModel poDetail)
         {
             string poNo = _poDetailsRepository.UpdatePoDetail(pODETAIL);
             if (poNo == string.Empty)
@@ -57,22 +57,22 @@ namespace POPSAPI.Controllers
                 throw new Exception("Falied to update");
             }
 
-            return Content(HttpStatusCode.Accepted, pODETAIL);
+            return Content(HttpStatusCode.Accepted, poDetail);
         }
 
         // POST: api/PoDetails
         [ResponseType(typeof(PODETAIL))]
-        public IHttpActionResult PostPODETAIL(PoDetailModel pODETAIL)
+        public IHttpActionResult PostPODETAIL(PoDetailModel poDetail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            string poNo = _poDetailsRepository.AddPoDetail(pODETAIL);
+            string poNo = _poDetailsRepository.AddPoDetail(poDetail);
 
 
-            return CreatedAtRoute("DefaultApi", new { id = pODETAIL.PONO }, pODETAIL);
+            return CreatedAtRoute("DefaultApi", new { id = poDetail.PONO }, poDetail);
         }
 
         // DELETE: api/PoDetails/5
