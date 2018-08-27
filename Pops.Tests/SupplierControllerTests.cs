@@ -38,8 +38,8 @@ namespace Pops.Tests
         {
             var testSuppliers = GetTestSuppliers();
             mockSupplierRepository.Setup(s => s.GetSupplierById(It.IsAny<string>())).Returns(Task.FromResult(testSuppliers[1]).Result);
-            var result = controller.GetSUPPLIER("2") as List<SupplierModel>;
-            Assert.AreEqual(testSuppliers[1], result);
+            var result = controller.GetSUPPLIER("2") as OkNegotiatedContentResult<SupplierModel>;
+            Assert.AreEqual(testSuppliers[1].SUPLNO, result.Content.SUPLNO);
         }
 
         [TestMethod]
@@ -47,8 +47,8 @@ namespace Pops.Tests
         {
             SupplierModel model = new SupplierModel { SUPLNO = "1", SUPLNAME = "Supplier1", SUPLADDR = "SuppAddress1" };
             mockSupplierRepository.Setup(s => s.AddSupplier(It.IsAny<SupplierModel>())).Returns(Task.FromResult(model.SUPLNO).Result);
-            var result = controller.PostSUPPLIER(model);
-            Assert.AreEqual(model.SUPLNO, result);
+            var result = controller.PostSUPPLIER(model) as CreatedAtRouteNegotiatedContentResult<SupplierModel>;
+            Assert.AreEqual(model.SUPLNO, result.Content.SUPLNO);
         }
 
         [TestMethod]
@@ -56,15 +56,15 @@ namespace Pops.Tests
         {
             SupplierModel model = new SupplierModel { SUPLNO = "1", SUPLNAME = "Supplier1", SUPLADDR = "SuppAddress1" };
             mockSupplierRepository.Setup(s => s.UpdateSupplier(It.IsAny<SupplierModel>())).Returns(Task.FromResult(model.SUPLNO).Result);
-            var result = controller.PutSUPPLIER(model.SUPLNO, model);
-            Assert.AreEqual(model.SUPLNO, result);
+            var result = controller.PutSUPPLIER(model.SUPLNO, model) as NegotiatedContentResult<SupplierModel>;
+            Assert.AreEqual(model.SUPLNO, result.Content.SUPLNO);
         }
 
         [TestMethod]
         public void DeleteSupplierTest()
         {
             SupplierModel model = new SupplierModel { SUPLNO = "1", SUPLNAME = "Supplier1", SUPLADDR = "SuppAddress1" };
-            mockSupplierRepository.Setup(s => s.DeleteSupplier(It.IsAny<string>()));
+            mockSupplierRepository.Setup(s => s.GetSupplierById(It.IsAny<string>())).Returns(model);
             var result = controller.DeleteSUPPLIER(model.SUPLNO);
             Assert.IsInstanceOfType(result, typeof(OkResult));
         }

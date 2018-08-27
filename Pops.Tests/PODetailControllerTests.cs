@@ -38,8 +38,8 @@ namespace Pops.Tests
         {
             var testPoMasters = GetTestPoDetails();
             mockPoDetailRepository.Setup(s => s.GetPoDetailsById(It.IsAny<string>())).Returns(Task.FromResult(testPoMasters[1]).Result);
-            var result = controller.GetPODETAIL("2") as List<SupplierModel>;
-            Assert.AreEqual(testPoMasters[1], result);
+            var result = controller.GetPODETAIL("2") as OkNegotiatedContentResult<PoDetailModel>;
+            Assert.AreEqual(testPoMasters[1].PONO, result.Content.PONO);
         }
 
         [TestMethod]
@@ -47,8 +47,8 @@ namespace Pops.Tests
         {
             PoDetailModel model = new PoDetailModel { PONO = "1" };
             mockPoDetailRepository.Setup(s => s.AddPoDetail(It.IsAny<PoDetailModel>())).Returns(Task.FromResult(model.PONO).Result);
-            var result = controller.PostPODETAIL(model);
-            Assert.AreEqual(model.PONO, result);
+            var result = controller.PostPODETAIL(model) as CreatedAtRouteNegotiatedContentResult<PoDetailModel>;
+            Assert.AreEqual(model.PONO, result.Content.PONO);
         }
 
         [TestMethod]
@@ -56,15 +56,15 @@ namespace Pops.Tests
         {
             PoDetailModel model = new PoDetailModel { PONO = "1" };
             mockPoDetailRepository.Setup(s => s.UpdatePoDetail(It.IsAny<PoDetailModel>())).Returns(Task.FromResult(model.PONO).Result);
-            var result = controller.PutPODETAIL(model.PONO, model);
-            Assert.AreEqual(model.SUPLNO, result);
+            var result = controller.PutPODETAIL(model.PONO, model) as NegotiatedContentResult<PoDetailModel>;
+            Assert.AreEqual(model.PONO, result.Content.PONO);
         }
 
         [TestMethod]
         public void DeleteSupplierTest()
         {
             PoDetailModel model = new PoDetailModel { PONO = "1" };
-            mockPoDetailRepository.Setup(s => s.DeletePoDetail(It.IsAny<string>()));
+            mockPoDetailRepository.Setup(s => s.GetPoDetailsById(It.IsAny<string>())).Returns(model);
             var result = controller.DeletePODETAIL(model.PONO);
             Assert.IsInstanceOfType(result, typeof(OkResult));
         }

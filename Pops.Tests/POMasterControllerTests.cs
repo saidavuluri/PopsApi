@@ -8,6 +8,8 @@ using Moq;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
 using System.Collections.Generic;
+using System.Web.Http;
+using System.Net;
 
 namespace Pops.Tests
 {
@@ -38,8 +40,8 @@ namespace Pops.Tests
         {
             var testPoMasters = GetTestPoMasters();
             mockPoMasterRepository.Setup(s => s.GetPoMasterById(It.IsAny<string>())).Returns(Task.FromResult(testPoMasters[1]).Result);
-            var result = controller.GetPOMASTER("2") as List<SupplierModel>;
-            Assert.AreEqual(testPoMasters[1], result);
+            var result = controller.GetPOMASTER("2") as OkNegotiatedContentResult<PoMasterModel>;
+            Assert.AreEqual(testPoMasters[1].PONO, result.Content.PONO);
         }
 
         [TestMethod]
@@ -47,8 +49,8 @@ namespace Pops.Tests
         {
             PoMasterModel model = new PoMasterModel { PONO = "1" };
             mockPoMasterRepository.Setup(s => s.AddPoMaster(It.IsAny<PoMasterModel>())).Returns(Task.FromResult(model.PONO).Result);
-            var result = controller.PostPOMASTER(model);
-            Assert.AreEqual(model.SUPLNO, result);
+            var result = controller.PostPOMASTER(model) as CreatedAtRouteNegotiatedContentResult<PoMasterModel>;
+            Assert.AreEqual(model.PONO, result.Content.PONO);
         }
 
         [TestMethod]
@@ -56,16 +58,19 @@ namespace Pops.Tests
         {
             PoMasterModel model = new PoMasterModel { PONO = "1"};
             mockPoMasterRepository.Setup(s => s.UpdatePoMaster(It.IsAny<PoMasterModel>())).Returns(Task.FromResult(model.PONO).Result);
-            var result = controller.PutPOMASTER(model.PONO, model);
-            Assert.AreEqual(model.SUPLNO, result);
+            var result = controller.PutPOMASTER(model.PONO, model) as NegotiatedContentResult<PoMasterModel>;
+            Assert.IsNotNull(result);
+            Assert.AreEqual(HttpStatusCode.Accepted, result.StatusCode);
+            Assert.IsNotNull(result.Content);
+            Assert.AreEqual(model.SUPLNO, result.Content.SUPLNO);
         }
 
         [TestMethod]
         public void DeletePoMasterTest()
         {
-            PoMasterModel model = new PoMasterModel { SUPLNO = "1" };
-            mockPoMasterRepository.Setup(s => s.DeletePoMaster(It.IsAny<string>()));
-            var result = controller.DeletePOMASTER(model.SUPLNO);
+            PoMasterModel model = new PoMasterModel { PONO ="2", SUPLNO = "1" };
+           mockPoMasterRepository.Setup(s => s.GetPoMasterById(model.PONO)).Returns(model);
+            var result = controller.DeletePOMASTER(model.PONO);
             Assert.IsInstanceOfType(result, typeof(OkResult));
         }
 

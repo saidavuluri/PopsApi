@@ -51,7 +51,7 @@ namespace POPSAPI.Controllers
                 throw new Exception("Falied to update");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Content(HttpStatusCode.Accepted, poMaster);
         }
 
         // POST: api/PoMasters
@@ -78,7 +78,7 @@ namespace POPSAPI.Controllers
                 return NotFound();
             }
             _poMasterRepository.DeletePoMaster(id);
-            return Ok(poMaster);
+            return Ok();
         }
     }
 }

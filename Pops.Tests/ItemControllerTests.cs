@@ -38,8 +38,8 @@ namespace Pops.Tests
         {
             var testItems = GetTestItems();
             mockItemRepository.Setup(s => s.GetItemByItemCode(It.IsAny<string>())).Returns(Task.FromResult(testItems[1]).Result);
-            var result = controller.GetITEM("2");
-            Assert.AreEqual(testItems[1].ITCODE, result);
+            var result = controller.GetITEM("2") as OkNegotiatedContentResult<ITEMModel>;
+            Assert.AreEqual(testItems[1].ITCODE, result.Content.ITCODE);
         }
 
         [TestMethod]
@@ -47,8 +47,8 @@ namespace Pops.Tests
         {
             ITEMModel model = new ITEMModel { ITCODE = "1"};
             mockItemRepository.Setup(s => s.AddItem(It.IsAny<ITEMModel>())).Returns(Task.FromResult(model.ITCODE).Result);
-            var result = controller.PostITEM(model);
-            Assert.AreEqual(model.ITCODE, result);
+            var result = controller.PostITEM(model) as CreatedAtRouteNegotiatedContentResult<ITEMModel>;
+            Assert.AreEqual(model.ITCODE, result.Content.ITCODE);
         }
 
         [TestMethod]
@@ -56,15 +56,15 @@ namespace Pops.Tests
         {
             ITEMModel model = new ITEMModel { ITCODE = "1" };
             mockItemRepository.Setup(s => s.UpdateItem(It.IsAny<ITEMModel>())).Returns(Task.FromResult(model.ITCODE).Result);
-            var result = controller.PutITEM(model.ITCODE, model);
-            Assert.AreEqual(model.ITCODE, result);
+            var result = controller.PutITEM(model.ITCODE, model) as NegotiatedContentResult<ITEMModel>;
+            Assert.AreEqual(model.ITCODE, result.Content.ITCODE);
         }
 
         [TestMethod]
         public void DeleteSupplierTest()
         {
             ITEMModel model = new ITEMModel { ITCODE = "1" };
-            mockItemRepository.Setup(s => s.DeleteItem(It.IsAny<string>()));
+            mockItemRepository.Setup(s => s.GetItemByItemCode(It.IsAny<string>())).Returns(model);
             var result = controller.DeleteITEM(model.ITCODE);
             Assert.IsInstanceOfType(result, typeof(OkResult));
         }

@@ -56,7 +56,7 @@ namespace POPSAPI.Controllers
                 throw new Exception("Falied to update");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Content(HttpStatusCode.Accepted, pODETAIL);
         }
 
         // POST: api/PoDetails
@@ -84,7 +84,7 @@ namespace POPSAPI.Controllers
                 return NotFound();
             }
             _poDetailsRepository.DeletePoDetail(id);
-            return Ok(poDetail);
+            return Ok();
         }
     }
 }
